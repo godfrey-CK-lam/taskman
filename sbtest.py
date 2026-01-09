@@ -11,8 +11,9 @@ url: Final[str] = os.getenv('SUPABASE_URL')
 pub_key: Final[str] = os.getenv('SUPABASE_PUBLISHABLE_KEY')
 supabase: Client = create_client(url, pub_key)
 
+
 def show_tasks():
     response = supabase.table('tasks').select("*").execute()
-    data = response.data
-    return data
+    tasks = response.data
+    return tasks
 
