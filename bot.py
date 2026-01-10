@@ -3,6 +3,7 @@ from typing import Final
 from dotenv import load_dotenv
 from discord import Intents, Client, Message
 from responses import get_response
+import datetime
 
 # loading important env variables
 load_dotenv()
@@ -12,6 +13,7 @@ TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 intents: Intents = Intents.default()
 intents.message_content = True
 client: Client = Client(intents=intents)
+timestamp: str = datetime.datetime.now().replace(microsecond=0)
 
 async def send_msg(msg: Message, user_msg: str):
     if not (user_msg):
@@ -23,10 +25,10 @@ async def send_msg(msg: Message, user_msg: str):
         user_msg = user_msg[1:]
 
     try:
-        response = get_response(user_msg)
+        response = get_response(user_msg, timestamp)
         await msg.author.send(response) if private else await msg.channel.send(response)
-    except Exception as e:
-        print()
+    except Exception:
+        print(Exception)
 
 # start the bot
 @client.event
