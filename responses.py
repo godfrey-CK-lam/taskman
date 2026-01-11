@@ -8,9 +8,6 @@ def get_response(user_input: str):
     data = user_input.split(maxsplit=1)
     command = data[0]
 
- 
-    print(len(data))
-    
     if len(data) != 1:
         task_info = data[1].split("|")
         task_info[0] = " ".join(task_info[0].strip().split())
@@ -20,7 +17,7 @@ def get_response(user_input: str):
             task_info[1] = normalize_time(task_info[1])
         except Exception:
             print("bad time")
-            return("A date or time is malformated, the task was not added")
+            return("A date or time is malformated, the task was not added (DD-MM-YYYY H:M)")
 
     match command:
         case "!view":
@@ -33,12 +30,14 @@ def get_response(user_input: str):
                 return ("A task with that name is already present")
             return ("Task was inserted successfully")
         case "!remove":
-            remove_task(task_info)
+            remove_task(task_info[0])
             return("Task removed successfully")
         case "!complete":
-            raise NotImplementedError
+            mark_complete(task_info[0])
+            return("Task marked as complete")
         case "!incomplete":
-            raise NotImplementedError
+            mark_incomplete(task_info[0])
+            return("Task marked as incomplete")
         case "!cleardone":
             raise NotImplementedError
         case "!help":
@@ -97,3 +96,4 @@ def normalize_time(time):
             return str(time)
         except Exception:
             raise Exception
+        

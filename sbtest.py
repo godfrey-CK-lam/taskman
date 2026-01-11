@@ -47,18 +47,34 @@ def remove_task(task_info):
     print("removing task:" + task_info[0])
 
     try:
-        supabase.table("tasks").delete().eq("name",task_info[0]).execute()
+        supabase.table("tasks").delete().eq("name",task_info).execute()
     except Exception as e:
         print(e)
     
-    print("task removed")
-    return("Task removed successfully")
+    print(task_info + " removed")
+    return("Task - " + task_info + " removed successfully")
 
-def mark_incomplete(user_input):
-    pass
+def mark_incomplete(task_info):
+    print("marking incomplete: " + task_info) 
+
+    try:
+        supabase.table("tasks").update({"complete": False}).eq("name",task_info).execute()
+    except Exception as e:
+        print(e)
     
-def mark_complete(user_input):
-    pass
+    print(task_info + " marked as complete")
+    return("Task - " +  task_info + " marked as complete ")
+    
+def mark_complete(task_info):
+    print("marking complete: " + task_info) 
+
+    try:
+        supabase.table("tasks").update({"complete": True}).eq("name",task_info).execute()
+    except Exception as e:
+        print(e)
+    
+    print( task_info + " marked as complete")
+    return("Task - " + task_info + "Task marked as complete ")
 
 def clear_done():
     pass
