@@ -2,7 +2,7 @@
 import os
 
 from typing import Final
-from supabase import create_client, Client, PostgrestAPIError
+from supabase import create_client, Client
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -16,33 +16,19 @@ supabase: Client = create_client(url, pub_key)
 class DuplicateNameException(Exception):
     pass
 
-
-class BadDateTimeException(Exception):
-    pass
-
-
 def show_tasks():
     response = supabase.table("tasks").select("*").order("due_date").execute()
     tasks = response.data
     return tasks
 
+def insert_task(task_info, timestamp):
+  
+    print("inserting task with values: " + str(task_info) + " timestamp: " + str(timestamp))
 
-def insert_task(user_input, timestamp):
-    data = (user_input.split(" ", 1)[1]).split("|")
-    print(data)
-    if len(data) == 1:
-        data.append(None)
-
-    try:
-        time = normalize_time(data[1])
-    except Exception:
-        raise BadDateTimeException
-
-    print(time)
     payload = {
-        "name": data[0],
+        "name": task_info[0],
         "creation_date": str(timestamp),
-        "due_date": str(time),
+        "due_date": task_info[1],
         "complete": False,
     }
     print(payload)
@@ -54,24 +40,26 @@ def insert_task(user_input, timestamp):
         print(e)
         if error_code == 23505:
             raise DuplicateNameException
-        elif error_code == 22008:
-            raise BadDateTimeException
     return
 
+def remove_task(task_info):
 
-def remove_task(user_input):
+    print("removing task:" + task_info[0])
+
+    try:
+        supabase.table("tasks").delete().eq("name",task_info[0]).execute()
+    except Exception as e:
+        print(e)
+    
+    print("task removed")
+    return("Task removed successfully")
+
+def mark_incomplete(user_input):
+    pass
+    
+def mark_complete(user_input):
     pass
 
+def clear_done():
+    pass
 
-def normalize_time(time):
-    if time == None:
-        return None
-    else:
-        print(time)
-        time = time.strip()
-        print(time)
-        try:
-            time = datetime.strptime(time, "%d-%m-%Y %H:%M")
-            return time
-        except Exception:
-            raise Exception

@@ -14,7 +14,6 @@ intents: Intents = Intents.default()
 intents.message_content = True
 client: Client = Client(intents=intents)
 
-
 async def send_msg(msg: Message, user_msg: str):
     if not (user_msg):
         return
