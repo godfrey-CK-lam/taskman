@@ -4,6 +4,7 @@ from datetime import datetime
 
 def get_response(user_input: str):
 
+    # probably should put this part in its own function
     user_input = user_input.lower()
     data = user_input.split(maxsplit=1)
     command = data[0]
@@ -17,7 +18,7 @@ def get_response(user_input: str):
             task_info[1] = normalize_time(task_info[1])
         except Exception:
             print("bad time")
-            return("A date or time is malformated, the task was not added (DD-MM-YYYY H:M)")
+            return("A date or time is malformated (DD-MM-YYYY H:M)")
 
     match command:
         case "!view":
@@ -39,7 +40,7 @@ def get_response(user_input: str):
             mark_incomplete(task_info[0])
             return("Task marked as incomplete")
         case "!cleardone":
-            raise NotImplementedError
+            return clear_done()
         case "!help":
             helptext = "```"+"""
             Taskman - Commands

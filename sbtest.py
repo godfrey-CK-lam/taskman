@@ -1,6 +1,5 @@
 # testing for supabase
 import os
-
 from typing import Final
 from supabase import create_client, Client
 from datetime import datetime
@@ -11,7 +10,6 @@ load_dotenv()
 url: Final[str] = os.getenv("SUPABASE_URL")
 pub_key: Final[str] = os.getenv("SUPABASE_PUBLISHABLE_KEY")
 supabase: Client = create_client(url, pub_key)
-
 
 class DuplicateNameException(Exception):
     pass
@@ -77,5 +75,13 @@ def mark_complete(task_info):
     return("Task - " + task_info + "Task marked as complete ")
 
 def clear_done():
-    pass
+
+    print("clearing all completed tasks")
+    try:
+        supabase.table("tasks").delete().eq("complete",True).execute()
+        return ("all completed tasks cleared")
+    except Exception as e:
+        print(e)
+
+    
 
