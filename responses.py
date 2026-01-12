@@ -31,14 +31,11 @@ def get_response(user_input: str):
                 return ("A task with that name is already present")
             return ("Task was inserted successfully")
         case "!remove":
-            remove_task(task_info[0])
-            return("Task removed successfully")
+            return remove_task(task_info[0])
         case "!complete":
-            mark_complete(task_info[0])
-            return("Task marked as complete")
+            return mark_complete(task_info[0])
         case "!incomplete":
-            mark_incomplete(task_info[0])
-            return("Task marked as incomplete")
+            return mark_incomplete(task_info[0])
         case "!cleardone":
             return clear_done()
         case "!help":

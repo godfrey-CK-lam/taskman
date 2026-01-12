@@ -50,7 +50,7 @@ def remove_task(task_info):
         print(e)
     
     print(task_info + " removed")
-    return("Task - " + task_info + " removed successfully")
+    return("Task: " + task_info + " removed successfully")
 
 def mark_incomplete(task_info):
     print("marking incomplete: " + task_info) 
@@ -61,7 +61,7 @@ def mark_incomplete(task_info):
         print(e)
     
     print(task_info + " marked as complete")
-    return("Task - " +  task_info + " marked as complete ")
+    return("Task: " +  task_info + " marked as complete ")
     
 def mark_complete(task_info):
     print("marking complete: " + task_info) 
@@ -72,14 +72,14 @@ def mark_complete(task_info):
         print(e)
     
     print( task_info + " marked as complete")
-    return("Task - " + task_info + "Task marked as complete ")
+    return("Task: " + task_info + " marked as complete ")
 
 def clear_done():
 
     print("clearing all completed tasks")
     try:
         supabase.table("tasks").delete().eq("complete",True).execute()
-        return ("all completed tasks cleared")
+        return ("All completed tasks cleared")
     except Exception as e:
         print(e)
 
