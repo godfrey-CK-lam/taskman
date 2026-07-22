@@ -24,7 +24,24 @@ async def send_msg(msg: Message, user_msg: str):
         user_msg = user_msg[1:]
 
     try:
-        response = get_response(user_msg)
+        context = {
+            "username": str(msg.author),
+            "user_msg": msg.content,
+            "channel" : str(msg.channel.id),
+            "guild": str(msg.guild.id)
+        }
+    except:
+        context = {
+               
+                "username": str(msg.author),
+                "user_msg": msg.content,
+                "channel" : str(msg.channel.id)
+                
+        }
+        
+        print(context)
+    try:
+        response = get_response(context, user_msg)
 
         if response is None:
 
@@ -48,12 +65,7 @@ async def on_message(msg):
     if msg.author == client.user:
         return
 
-    username = str(msg.author)
-    user_msg = msg.content
-    channel = str(msg.channel)
-
-    print(f' [{channel}] {username}: "{user_msg}" ')
-    await send_msg(msg, user_msg)
+    await send_msg(msg, msg.content)
 
 
 def main():

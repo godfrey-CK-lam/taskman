@@ -17,6 +17,7 @@ class DuplicateNameException(Exception):
 def show_tasks():
     response = supabase.table("tasks").select("*").order("due_date").execute()
     tasks = response.data
+    
     return tasks
 
 def insert_task(task_info, timestamp):

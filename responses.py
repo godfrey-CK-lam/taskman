@@ -2,8 +2,11 @@ from sbtest import *
 from datetime import datetime
 
 
-def get_response(user_input: str):
+def get_response(context, user_input: str):
 
+    print("now in responses.py")
+    print(user_input)
+    print(context)
     # probably should put this part in its own function
     user_input = user_input.lower()
     data = user_input.split(maxsplit=1)
@@ -22,22 +25,25 @@ def get_response(user_input: str):
 
     match command:
         case "!view":
-            data = "```" + format_result(show_tasks()) + "```"
-            return data
+            try:
+                data =format_result(show_tasks())
+                return data
+            except: 
+                return text_wrapper(("No tasks present :)"))
         case "!insert":
             try:
                 insert_task(task_info, datetime.now())
             except DuplicateNameException:
-                return ("A task with that name is already present")
-            return ("Task was inserted successfully")
+                return text_wrapper(("A task with that name is already present"))
+            return text_wrapper(("Task was inserted successfully"))
         case "!remove":
-            return remove_task(task_info[0])
+            return text_wrapper(remove_task(task_info[0]))
         case "!complete":
-            return mark_complete(task_info[0])
+            return text_wrapper(mark_complete(task_info[0]))
         case "!incomplete":
-            return mark_incomplete(task_info[0])
+            return text_wrapper(mark_incomplete(task_info[0]))
         case "!cleardone":
-            return clear_done()
+            return text_wrapper(clear_done())
         case "!help":
             helptext = "```"+"""
             Taskman - Commands
@@ -78,7 +84,7 @@ def format_result(tasks):
         line = f"[{status}] {task['name']} (Due: {due_date})"
         task_list.append(line)
         msg = "\n".join(task_list)
-    return msg
+    return "```" + msg + "```"
 
 
 def format_time(timestamp):
@@ -95,3 +101,5 @@ def normalize_time(time):
         except Exception:
             raise Exception
         
+def text_wrapper(msg): 
+    return "```" + msg + "```"
