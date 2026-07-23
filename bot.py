@@ -25,15 +25,14 @@ async def send_msg(msg: Message, user_msg: str):
 
     try:
         context = {
-            "username": str(msg.author),
+            "username": str(msg.author.id),
             "user_msg": msg.content,
-            "channel" : str(msg.channel.id),
             "guild": str(msg.guild.id)
         }
     except:
         context = {
                
-                "username": str(msg.author),
+                "username": str(msg.author.id),
                 "user_msg": msg.content,
                 "channel" : str(msg.channel.id)
                 
@@ -41,7 +40,7 @@ async def send_msg(msg: Message, user_msg: str):
         
         print(context)
     try:
-        response = get_response(context, user_msg)
+        response = get_response(context)
 
         if response is None:
 

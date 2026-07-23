@@ -1,15 +1,15 @@
-from sbtest import *
+from database import *
 from datetime import datetime
 
 
-def get_response(context, user_input: str):
+def get_response(context):
 
     print("now in responses.py")
-    print(user_input)
     print(context)
     # probably should put this part in its own function
-    user_input = user_input.lower()
-    data = user_input.split(maxsplit=1)
+    context["user_msg"] = context["user_msg"].lower()
+    data = context["user_msg"].split(maxsplit=1)
+    print(data)
     command = data[0]
 
     if len(data) != 1:
